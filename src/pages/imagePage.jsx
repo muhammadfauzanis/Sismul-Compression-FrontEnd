@@ -3,7 +3,7 @@ import { Helper } from '../helper/helper';
 import { useState } from "react";
 import axios from "axios";
 
-const HomePage = () => {
+const ImagePage = () => {
   const {baseURLAPI} = Helper();
   const [compression1, setCompression1] = useState([]);
   const [compression2, setCompression2] = useState([]);
@@ -13,7 +13,7 @@ const HomePage = () => {
     setOnProcces(1)
     let file   = event.target.files[0];
     
-    if(file.size > 1024*1024*5){
+    if(file.size > 1024*1024*10){
       alert("Maksimal 5MB");
       setOnProcces(0)
       event.target.value = '';
@@ -25,7 +25,7 @@ const HomePage = () => {
 
     try {
       await axios
-      .post(baseURLAPI('audio/mp3'), formData)
+      .post(baseURLAPI('gambar/jpeg'), formData)
       .then((response) => {
         setCompression1(response.data);
       });
@@ -34,7 +34,7 @@ const HomePage = () => {
     }
     try {
       await axios
-      .post(baseURLAPI('audio/ogg'), formData)
+      .post(baseURLAPI('gambar/webp'), formData)
       .then((response) => {
         setCompression2(response.data);
       });
@@ -48,23 +48,23 @@ const HomePage = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex flex-col justify-start items-start ">
-        <h1 className="font-bold mt-20 text-3xl pb-5 ">Audio Compression</h1>
+        <h1 className="font-bold mt-20 text-3xl pb-5 ">Image Compression</h1>
         <h3 className="font-bold text-xl pb-3">
-          Upload your audio file and compress it
+          Upload your image file and compress it
         </h3>
 
-        <p>Upload an audio file</p>
+        <p>Upload an image file</p>
       </div>
       <div className="flex items-center justify-center mt-4 gap-x-8 bg-[#252730] p-6 rounded-lg cursor-pointer">
         <IoCloudUploadOutline size={35} className="text-gray-200" />
         <div className="">
           <p className="">Drag and drop file here</p>
-          <p className="text-sm ">Limit 5MB per file • WAV</p>
+          <p className="text-sm ">Limit 10MB per file • JPG</p>
         </div>
         <div className="mt-4 my-auto">
           <label className={` ${onProcess === 1 ? 'cursor-wait' : ''} bg-[#0e1117] border-2 border-gray-700 rounded-lg  hover:border-red-500 hover:text-red-500 text-white font-bold py-2 px-4 `}>
             Browse files
-            <input type="file" disabled={ onProcess === 1 ? 'disabled' : '' } onChange={uploadFile} className="hidden" accept='.wav' />
+            <input type="file" disabled={ onProcess === 1 ? 'disabled' : '' } onChange={uploadFile} className="hidden" accept='.jpg' />
           </label>
         </div>
       </div>
@@ -74,10 +74,8 @@ const HomePage = () => {
 
         { compression1.original_size ? (
           <div className="bg-[#252730] p-6 rounded-lg p-3">
-            <h1 className="font-bold text-xl pb-5 ">MP3</h1>
-            <audio src={baseURLAPI('../download_file/' + compression1.url)} controls className='w-full'>
-              <source />
-            </audio>
+            <h1 className="font-bold text-xl pb-5 ">JPEG</h1>
+            <img src={baseURLAPI('../download_file/' + compression1.url)}  className='w-96'/>
             
             <table className='mt-3'>
               <tbody>
@@ -100,10 +98,9 @@ const HomePage = () => {
 
         { compression2.original_size ? (
           <div className="bg-[#252730] p-6 rounded-lg p-3">
-            <h1 className="font-bold text-xl pb-5 ">OGG</h1>
-            <audio src={baseURLAPI('../download_file/' + compression2.url)} controls className='w-full'>
-              <source />
-            </audio>
+            <h1 className="font-bold text-xl pb-5 ">WEBP</h1>
+            <img src={baseURLAPI('../download_file/' + compression1.url)}  className='w-96'/>
+
             
             <table className='mt-3'>
               <tbody>
@@ -142,4 +139,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ImagePage;
