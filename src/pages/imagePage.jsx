@@ -14,7 +14,7 @@ const ImagePage = () => {
     let file   = event.target.files[0];
     
     if(file.size > 1024*1024*10){
-      alert("Maksimal 5MB");
+      alert("Maksimal 10MB");
       setOnProcces(0)
       event.target.value = '';
       return false;
